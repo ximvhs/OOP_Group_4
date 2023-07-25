@@ -122,7 +122,7 @@ public:
     // Hàm tính lương của ProductionStaff
     int Caculatesalary()
     {
-        if (NumberofProducts >= 24)
+        if (NumberofProducts >= 30)
         {
             return NumberofProducts * 20000 + 500000;
         }
