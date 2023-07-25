@@ -5,16 +5,17 @@
 
 using namespace std;
 
+// Khai báo lớp nhân viên
+// bao gồm các thuộc tính StaffID, FullName, DateOfBirth,Address
 class Staff
 {
-
-protected:
     string StaffID;
     string Fullname;
     string Dateofbirth;
     string Address;
 
 public:
+    // Get set
     void setSTAFFID(string s) { s = StaffID; }
     string getSTAFFID() { return StaffID; }
     void setFULLNAME(string s) { s = Fullname; }
@@ -23,6 +24,7 @@ public:
     string getDATEOFBIRTH() { return Dateofbirth; }
     void setADDRESS(string s) { s = Address; }
     string getADDRESS() { return Address; }
+    // Hàm khởi tạo giá trị mặc định
     Staff(string _StaffID = "0", string _Fullname = "fullname", string _Dateofbirth = "0", string _Address = "address")
     {
         StaffID = _StaffID;
@@ -30,7 +32,7 @@ public:
         Dateofbirth = _Dateofbirth;
         Address = _Address;
     }
-
+    // Hàm sao chép
     Staff(const Staff &s)
     {
         StaffID = s.StaffID;
@@ -38,9 +40,9 @@ public:
         Dateofbirth = s.Dateofbirth;
         Address = s.Address;
     }
-
+    // Hàm hủy
     ~Staff() {}
-
+    // Hàm nhập dùng quá tải toán tử >>
     friend istream &operator>>(istream &in, Staff &st)
     {
         in.ignore();
@@ -53,6 +55,7 @@ public:
         getline(in, st.Address);
         return in;
     }
+    // Hàm xuất dùng quá tải toán tử <<
     friend ostream &operator<<(ostream &out, Staff st)
     {
         out << "\nID: " << st.StaffID;
@@ -63,30 +66,33 @@ public:
     }
 };
 
+// Khai báo lớp ProductionStaff kế thừa các thuộc tính từ lớp Staff
 class ProductionStaff : public Staff
 {
-
-private:
     int NumberofProducts;
 
 public:
+    // Get set
     void setNUMBEROFPRODUCTS(int s) { s = NumberofProducts; }
     int getNUMBEROFPRODUCTS() { return NumberofProducts; }
+    // Hàm khởi tạo giá trị mặc định có kế thừa lại lớp Staff
     ProductionStaff(string _StaffID = "0", string _Fullname = "fullname", string _Dateofbirth = "0", string _Address = "address", int _NumberofProducts = 0)
         : Staff(_StaffID, _Fullname, _Dateofbirth, _Address)
     {
         NumberofProducts = _NumberofProducts;
     }
-
+    // Hàm sao chép có kế thừa lại lớp Staff
     ProductionStaff(const ProductionStaff &ps) : Staff(ps)
     {
         NumberofProducts = ps.NumberofProducts;
     }
-
+    // Hàm hủy
     ~ProductionStaff() {}
 
+    // Hàm nhập thông tin ProductionStaff dùng quá tải toán tử >>
     friend istream &operator>>(istream &in, ProductionStaff &ps)
     {
+        // Gọi lại hàm khởi tạo
         string StaffID, FullName, Dateofbirth, Address;
         int NumberofProducts;
 
@@ -98,10 +104,12 @@ public:
         getline(in, Address);
         in >> NumberofProducts;
 
+        // Gọi lại
         ps = ProductionStaff(StaffID, FullName, Dateofbirth, Address, NumberofProducts);
 
         return in;
     }
+    // Hàm xuất thông tin ProductionStaff dùng quá tải toán tử <<
     friend ostream &operator<<(ostream &out, ProductionStaff ps)
     {
         out << "\nID: " << ps.getSTAFFID();
@@ -111,34 +119,44 @@ public:
         out << "\nThe number of products are: " << ps.NumberofProducts;
         return out;
     }
+    // Hàm tính lương của ProductionStaff
     int Caculatesalary()
     {
-        return NumberofProducts * 20000;
+        if (NumberofProducts >= 24)
+        {
+            return NumberofProducts * 20000 + 500000;
+        }
+        else
+        {
+            return NumberofProducts * 20000;
+        }
     }
 };
 
+// Khai báo lớp NormalStaff kế thừa các thuộc tính của lớp Staff
 class NormalStaff : public Staff
 {
-
-private:
     int Numberofdays;
 
 public:
+    // Get set
     void setNUMBEROFDAYS(int s) { s = Numberofdays; }
     int getNUMBEROFDAYS() { return Numberofdays; }
+    // Hàm khởi tạo giá trị mặc định có kế thừa lại lớp Staff
     NormalStaff(string _StaffID = "0", string _Fullname = "fullname", string _Dateofbirth = "0", string _Address = "address", int _Numberofdays = 0)
         : Staff(_StaffID, _Fullname, _Dateofbirth, _Address)
     {
         Numberofdays = _Numberofdays;
     }
-
+    // Hàm sao chép có kế thừa lại lớp Staff
     NormalStaff(const NormalStaff &ns) : Staff(ns)
     {
         Numberofdays = ns.Numberofdays;
     }
-
+    // Hàm hủy
     ~NormalStaff() {}
 
+    // Hàm nhập thông tin NormalStaff dùng quá tải toán tử >>
     friend istream &operator>>(istream &in, NormalStaff &ns)
     {
         string StaffID, FullName, Dateofbirth, Address;
@@ -156,6 +174,7 @@ public:
 
         return in;
     }
+    // Hàm xuất thông tin NormalStaff dùng quá tải toán tử <<
     friend ostream &operator<<(ostream &out, NormalStaff ns)
     {
         out << "\nID: " << ns.getSTAFFID();
@@ -165,33 +184,44 @@ public:
         out << "\nThe number of days are: " << ns.Numberofdays;
         return out;
     }
+    // Hàm tính lương của NormalStaff
     int Caculatesalary()
     {
-        return Numberofdays * 45000;
+        if (Numberofdays >= 24)
+        {
+            return Numberofdays * 45000 + 750000;
+        }
+        else
+        {
+            return Numberofdays * 45000;
+        }
     }
 };
 
+// Khai báo lớp ManagementStaff kế thừa các thuộc tính của lớp Staff
 class ManagementStaff : public Staff
 {
-
-private:
     int Wagecoefficient;
 
 public:
+    // Get set
     void setWAGECOEFFICIENT(int s) { s = Wagecoefficient; }
     int getWAGECOEFFICIENT() { return Wagecoefficient; }
+    // Hàm khởi tạo giá trị mặc định có kế thừa lại lớp Staff
     ManagementStaff(string _StaffID = "0", string _Fullname = "fullname", string _Dateofbirth = "0", string _Address = "address", int _Wagecoefficient = 0)
         : Staff(_StaffID, _Fullname, _Dateofbirth, _Address)
     {
         Wagecoefficient = _Wagecoefficient;
     }
-
+    // Hàm sao chép có kế thừa lại lớp Staff
     ManagementStaff(const ManagementStaff &ms) : Staff(ms)
     {
         Wagecoefficient = ms.Wagecoefficient;
     }
-
+    // Hàm hủy
     ~ManagementStaff() {}
+
+    // Hàm nhập thông tin ProductionStaff dùng quá tải toán tử >>
     friend istream &operator>>(istream &in, ManagementStaff &ms)
     {
         string StaffID, FullName, Dateofbirth, Address;
@@ -209,6 +239,7 @@ public:
 
         return in;
     }
+    // Hàm xuất thông tin ProductionStaff dùng quá tải toán tử <<
     friend ostream &operator<<(ostream &out, ManagementStaff ms)
     {
         out << "\nID: " << ms.getSTAFFID();
@@ -218,6 +249,8 @@ public:
         out << "\nThe number of days are: " << ms.Wagecoefficient;
         return out;
     }
+
+    // Hàm tính lương của ManagmentStaff
     int Caculatesalary()
     {
         if (Wagecoefficient >= 24)
@@ -231,10 +264,12 @@ public:
     }
 };
 
+// Khai báo lớp công ty kế thừa từ 3 lớp ProductionStaff, NormalStaff, ManagmentStaff
 class Company : public ProductionStaff, public NormalStaff, public ManagementStaff
 {
 
 public:
+    // Hàm nhập thông tin của 3 lớp nv
     void ImportListOfStaff(ProductionStaff x[], int n, NormalStaff y[], int m, ManagementStaff z[], int c)
     {
 
@@ -254,6 +289,7 @@ public:
         }
     }
 
+    // Hàm xuát thông tin của 3 lớp nv
     void ExportListOfStaff(ProductionStaff x[], int n, NormalStaff y[], int m, ManagementStaff z[], int c)
     {
         std::cout.imbue(std::locale("")); // them dau phay dinh dang money
@@ -267,9 +303,9 @@ public:
             cout << endl;
             if (x[i].getNUMBEROFPRODUCTS() >= 30)
             {
-                cout << "Salary: " << x[i].Caculatesalary() << "VND" << endl;
+                cout << "Salary: " << x[i].Caculatesalary() - 500000 << "VND" << endl;
                 cout << "Bonus: " << 500000 << "VND" << endl;
-                cout << "Total: " << x[i].Caculatesalary() + 500000 << "VND" << endl;
+                cout << "Total: " << x[i].Caculatesalary() << "VND" << endl;
             }
             else
             {
@@ -287,9 +323,9 @@ public:
             cout << endl;
             if (y[i].getNUMBEROFDAYS() >= 24)
             {
-                cout << "Salary: " << y[i].Caculatesalary() << "VND" << endl;
+                cout << "Salary: " << y[i].Caculatesalary() - 750000 << "VND" << endl;
                 cout << "Bonus: " << 750000 << "VND" << endl;
-                cout << "Total: " << y[i].Caculatesalary() + 750000 << "VND" << endl;
+                cout << "Total: " << y[i].Caculatesalary() << "VND" << endl;
             }
             else
             {
@@ -307,9 +343,9 @@ public:
             cout << endl;
             if (z[i].getWAGECOEFFICIENT() >= 24)
             {
-                cout << "Salary: " << z[i].Caculatesalary() << "VND" << endl;
+                cout << "Salary: " << z[i].Caculatesalary() - 1000000 << "VND" << endl;
                 cout << "Bonus: " << 1000000 << "VND" << endl;
-                cout << "Total: " << z[i].Caculatesalary() + 1000000 << "VND" << endl;
+                cout << "Total: " << z[i].Caculatesalary() << "VND" << endl;
             }
             else
             {
@@ -318,6 +354,7 @@ public:
         }
     }
 
+    // Hàm tính tổng lương của cả 3 lớp nv
     void TotalSalary(ProductionStaff x[], int n, NormalStaff y[], int m, ManagementStaff z[], int c)
     {
 
@@ -342,6 +379,7 @@ public:
         cout << "\n\n\t\tThe total salary of all staff is: " << sum1 + sum2 + sum3 << "VND";
     }
 
+    // Hàm tìm ra nhân viên có lương cao nhát
     void TheHighestSalary(ProductionStaff x[], int n, NormalStaff y[], int m, ManagementStaff z[], int c)
     {
 
